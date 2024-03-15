@@ -36,7 +36,6 @@ build/
 .vim
 
 ### .properties files ###
-src/main/resources/datasource.properties
 
 ### md files ###
 commit-message.md
