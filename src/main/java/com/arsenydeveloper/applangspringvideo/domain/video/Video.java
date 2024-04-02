@@ -1,39 +1,102 @@
-package com.arsenydeveloper.applangspringvideo.application.data.video;
+package com.arsenydeveloper.applangspringvideo.domain.video;
 
+import com.arsenydeveloper.applangspringvideo.domain.tag.Tag;
 import com.arsenydeveloper.applangspringvideo.domain.video.enumerable.difficultylevel.DifficultyLevelEnum;
 import com.arsenydeveloper.applangspringvideo.domain.video.enumerable.videogenre.VideoGenreEnum;
 import com.arsenydeveloper.applangspringvideo.domain.video.enumerable.videolanguage.VideoLanguageEnum;
-import com.arsenydeveloper.applangspringvideo.application.data.tag.TagData;
-import java.time.LocalDate;
+import org.hibernate.validator.constraints.URL;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.GenerationType;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Past;
+import jakarta.persistence.FetchType;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
+import java.time.LocalDate;
 
 /**
  * @author Arseniy Koshelnik
  * @since 0.0.1
  */
-public class VideoData {
+@Entity
+@Table(name = "video")
+public class Video {
 
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", unique = true, updatable = false)
+    private UUID id;
+
+    @NotEmpty
+    @Column(name = "url")
     private String url;
-    private String title;
-    private Boolean isFamilyFriendly;
-    private String description;
-    private String imageUrl;
-    private Integer duration;
-    private LocalDate publishDate;
-    private VideoGenreEnum genre;
-    private String authorUrl;
-    private String author;
-    private String transcription;
-    private VideoLanguageEnum language;
-    private DifficultyLevelEnum difficultyLevel;
-    private Set<TagData> tags;
 
-    public String getId() {
+    @NotEmpty
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "is_family_friendly")
+    private Boolean isFamilyFriendly;
+
+    @NotEmpty
+    @Column(name = "description")
+    private String description;
+
+    @URL
+    @NotEmpty
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "duration")
+    private Integer duration;
+
+    @Past
+    @Column(name = "publish_date")
+    private LocalDate publishDate;
+
+    @Column(name = "genre")
+    private VideoGenreEnum genre;
+
+    @URL
+    @NotEmpty
+    @Column(name = "author_link")
+    private String authorUrl;
+
+    @NotEmpty
+    @Column(name = "author")
+    private String author;
+
+    @NotEmpty
+    @Column(name="transcription")
+    private String transcription;
+
+    @Column(name = "language")
+    private VideoLanguageEnum language;
+
+    @Column(name = "difficulty_level")
+    private DifficultyLevelEnum difficultyLevel;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "video_tag",
+        joinColumns = @JoinColumn(name = "video_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    )
+    private Set<Tag> tags;
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -141,11 +204,11 @@ public class VideoData {
         this.difficultyLevel = difficultyLevel;
     }
 
-    public Set<TagData> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<TagData> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 }

@@ -1,4 +1,4 @@
-package com.arsenydeveloper.applangspringvideo.application.data.video;
+package com.arsenydeveloper.applangspringvideo.adapters.api.video.spring.webmvc.presentation;
 
 import com.arsenydeveloper.applangspringvideo.domain.video.enumerable.difficultylevel.DifficultyLevelEnum;
 import com.arsenydeveloper.applangspringvideo.domain.video.enumerable.videogenre.VideoGenreEnum;
@@ -11,7 +11,7 @@ import java.util.Set;
  * @author Arseniy Koshelnik
  * @since 0.0.1
  */
-public class VideoData {
+public class VideoPresentationV1 {
 
     private String id;
     private String url;
